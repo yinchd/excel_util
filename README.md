@@ -30,33 +30,49 @@
 > ##### 2. 定义Java类，标注上注解:
 ```
 @ExcelSheet(name = "人员列表", headColor = HSSFColor.HSSFColorPredefined.LIGHT_GREEN)
-   public class Person {
-       @ExcelField(name = "编号", index = 1)
-       private Integer id;
-   
-       @ExcelField(name = "姓名", index = 3, width = 30 * 256)
-       private String name;
-   
-       // type = "admin",导出时，指定了type="admin", 则只导出包含此type = "admin"的列
-       @ExcelField(name = "等级", index = 4, value = "{A:'普通会员',B:'白银会员',C:'黄金会员',D:'铂金会员',E:'钻石会员'}", width = 30 * 256, type = "admin")
-       private String level;
-   
-       @ExcelField(name = "状态", index = 2, value = "{1:'正常',2:'禁用'}")
-       private Integer status;
-   
-       // 不使用注解
-       private String password;
-   
-       @ExcelField(name = "创建日期", index = 5, dateformat = "yyyy-MM-dd", type="admin")
-       private Date createDate;
-   
-       // getter setter...
-   }
+public class Person {
+    @ExcelField(name = "编号", index = 1)
+    private Integer id;
+
+    @ExcelField(name = "姓名", index = 3, width = 30 * 256)
+    private String name;
+
+    // type = "admin",导出时，指定了type="admin", 则只导出包含此type = "admin"的列
+    @ExcelField(name = "等级", index = 4, value = "{A:'普通会员',B:'白银会员',C:'黄金会员',D:'铂金会员',E:'钻石会员'}", width = 30 * 256, type = "admin")
+    private String level;
+
+    @ExcelField(name = "状态", index = 2, value = "{1:'正常',2:'禁用'}")
+    private Integer status;
+
+    // 不使用注解
+    private String password;
+
+    @ExcelField(name = "创建日期", index = 5, dateformat = "yyyy-MM-dd", type="admin")
+    private Date createDate;
+
+    // getter setter...
+}
 ```
 > ##### 3. 具体使用，请参考上述入门中使用的方式
 #### 四、方法列表：
 > ##### 1. ExcelReader
-方法名称|参数列表|方法说明
-:----|:-----|:-----
-左对齐|居中对齐|右对齐
-
+|方法名称|方法说明|示例|
+|:----|:-----|:-----|
+getListByFilePathAndClassType|根据文件路径、数据起始值读取文件到List<clazz>中|List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class, 1, 100); // 1, 100参数选传，代表数据起始行、数据结束行，数据起始行下标值，也即排除了标题行，数据起始值为0，此值可不传，不传时读取整个Excel数据到List中
+getListByInputStreamAndClassType|根据输入流、数据起始值读取文件到List<clazz>|List<Person> personList = ExcelReader.getListByInputStreamAndClassType(inputStream, Person.class);
+getListByFilePathAndSimpleClassType|根据文件路径、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByFilePathAndSimpleClassType(filePath, String.class);
+getListByInputStreamAndSimpleClassType|根据输入流、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByInputStreamAndSimpleClassType(inputStream, String.class);
+getPhysicalDataCountByInputStream|根据输入流获取表格的物理数据总条数（可能包含空行）|int excelPhysicalDataCount = ExcelReader.getPhysicalDataCountByInputStream(inputStream);
+getRealDataCountByInputStream|根据输入流获取表格有效数据总条数（不包含空行）|int excelRealDataCount = ExcelReader.getRealDataCountByInputStream(inputStream);
+getSingleColunmTitleByInputStream|读取单列表格的标题行|String title = ExcelReader.getSingleColunmTitleByInputStream(inputStream);
+validExcelByTitle|单列表格，通过校验title的形式校验文件符不符合要求| boolean result = ExcelReader.validExcelByTitle(title, inputStream);
+> ##### 2. ExcelWriter
+|方法名称|方法说明|示例|
+|:----|:-----|:-----|
+writeToDesktop|导出Excel文件到用户桌面 C:\Users\xxx\Desktop|ExcelWriter.writeToDesktop(fileName, dataList);
+writeToDesktop|根据导出类型导出Excel文件到用户桌面 C:\Users\xxx\Desktop|ExcelWriter.writeToDesktop(fileName, dataList, type); // 参考上述Person类中关于type用法的说明
+writeToPath|导出Excel文件到指定路径fileNameWithPath中|ExcelWriter.writeToPath(fileNameWithPath, dataList);
+writeToPath|根据导出类型导出Excel文件到指定路径fileNameWithPath中|ExcelWriter.writeToPath(fileNameWithPath, dataList, type);
+writeToPage|通过流写出到文件，用于页面下载|ExcelWriter.writeToPage(fileName, dataList, response);
+writeToPage|根据导出类型,通过流写出到文件，用于页面下载|ExcelWriter.writeToPage(fileName, dataList, type, response);
+> ##### 3. PoiUtils与ExcelReader方法大致一致，只不过实现方式为POI
