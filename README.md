@@ -1,11 +1,13 @@
 # ExcelUtils
 ### _A convenient Excel reading and writing util_
+### _一款功能强大、支持大数据量读取的Excel读取、写出工具集_
 #### 一、简介：
 > ##### ExcelUtils是一个参考了 [xxl-excel](https://github.com/xuxueli/xxl-excel) 的实现原理，加入了一些自定义功能，并且对读取性能进行了优化的通用Excel读取、导出工具
 > * 针对POI读取大文件时可能会引起内存溢出问题，更换读取方式为流式读取方式（Streaming Reader），采用缓冲流的方式进行读取；
 > * ExcelReader采用流式方式进行读取，支持多种读取方式（文件路径、文件对象、输入流、以及指定数据起始结束行进行读取等）读取文件为集合；
 > * ExcelWriter支持自定义导出Excel文件到用户桌面、指定路径、网页下载等；
 > * 保留通过poi读取Excel的PoiUtils组件，对原生POI进行了封装。
+> * 代码中引入lamda语法糖，代码阅读起来更简练。
 #### 二、入门：
 > ##### 1. 读取整个文档到集合中：
 > * ``` List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class);```
@@ -58,10 +60,10 @@ public class Person {
 > ##### 1. ExcelReader
 |方法名称|方法说明|示例|
 |:----|:-----|:-----|
-getListByFilePathAndClassType|根据文件路径、数据起始值读取文件到List<clazz>中|List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class, 1, 100); 
+getListByFilePathAndClassType|根据文件路径、数据起始值读取文件到List<clazz>中|List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class, 1, 100);
 getListByInputStreamAndClassType|根据输入流、数据起始值读取文件到List<clazz>|List<Person> personList = ExcelReader.getListByInputStreamAndClassType(inputStream, Person.class);
-getListByFilePathAndSimpleClassType|根据文件路径、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByFilePathAndSimpleClassType(filePath, String.class);
-getListByInputStreamAndSimpleClassType|根据输入流、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByInputStreamAndSimpleClassType(inputStream, String.class);
+getListByFilePathAndSimpleClassType|根据文件路径、数据起始值读取文件到简单数据类型List<clazz>中|List<String> personList = ExcelReader.getListByFilePathAndSimpleClassType(filePath, String.class);
+getListByInputStreamAndSimpleClassType|根据输入流、数据起始值读取文件到简单数据类型List<clazz>中|List<String> personList = ExcelReader.getListByInputStreamAndSimpleClassType(inputStream, String.class);
 getPhysicalDataCountByInputStream|根据输入流获取表格的物理数据总条数（可能包含空行）|int excelPhysicalDataCount = ExcelReader.getPhysicalDataCountByInputStream(inputStream);
 getRealDataCountByInputStream|根据输入流获取表格有效数据总条数（不包含空行）|int excelRealDataCount = ExcelReader.getRealDataCountByInputStream(inputStream);
 getSingleColunmTitleByInputStream|读取单列表格的标题行|String title = ExcelReader.getSingleColunmTitleByInputStream(inputStream);
