@@ -16,6 +16,7 @@
 > ##### 3. 读取单列Excel为基本数据类型，性能最快：
 > * ``` List<String> personList = ExcelReader.getListByFilePathAndSimpleClassType(filePath, String.class);```
 #### 三、使用：
+> ##### 1. 定义Java类，标注上注解:
 ```
 @ExcelSheet(name = "人员列表", headColor = HSSFColor.HSSFColorPredefined.LIGHT_GREEN)
 public class Person {
@@ -41,7 +42,7 @@ public class Person {
     // getter setter...
 }
 ```
-> ##### 1. 涉及到的注解:
+> ##### 2. 涉及到的注解说明:
 > + @ExcelSheet：类注解：标注在待转换为Excel的Java类上
 >   - `@ExcelSheet(name = "企业列表", headColor = HSSFColor.HSSFColorPredefined.LIGHT_GREEN)`
 >   - name: 读取时，指定了名称，则读取指定名称的表单；导出时，指定了名称，则导出的文件名称为该名称；
@@ -54,7 +55,6 @@ public class Person {
 >   - dateformat: 时间格式 yyyy-MM-dd或者其它格式；
 >   - value: 自定义转换参数，这里定义成JSON字符串的格式，如数据库里定义的status字段(1:待审核 2:成功 3:失败)存储的是1、2、3等数字值，导出到列表时需要是汉字，可以在此转义；
 >   - type: 导出时的标识字段，则只导出注解中包含"admin"标识的字段，如果不填，则导出所有；
-> ##### 2. 定义Java类，标注上注解:
 > ##### 3. 具体使用，请参考上述入门中使用的方式
 #### 四、方法列表：
 > ##### 1. ExcelReader
