@@ -58,7 +58,7 @@ public class Person {
 > ##### 1. ExcelReader
 |方法名称|方法说明|示例|
 |:----|:-----|:-----|
-getListByFilePathAndClassType|根据文件路径、数据起始值读取文件到List<clazz>中|List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class, 1, 100); // 1, 100参数选传，代表数据起始行、数据结束行，数据起始行下标值，也即排除了标题行，数据起始值为0，此值可不传，不传时读取整个Excel数据到List中
+getListByFilePathAndClassType|根据文件路径、数据起始值读取文件到List<clazz>中|List<Person> personList = ExcelReader.getListByFilePathAndClassType(filePath, Person.class, 1, 100); 
 getListByInputStreamAndClassType|根据输入流、数据起始值读取文件到List<clazz>|List<Person> personList = ExcelReader.getListByInputStreamAndClassType(inputStream, Person.class);
 getListByFilePathAndSimpleClassType|根据文件路径、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByFilePathAndSimpleClassType(filePath, String.class);
 getListByInputStreamAndSimpleClassType|根据输入流、数据起始值读取文件到List<clazz>中，其中class为简单数据类型，可提升读取效率：如String，Integer，Date等，可自行扩展|List<String> personList = ExcelReader.getListByInputStreamAndSimpleClassType(inputStream, String.class);
