@@ -67,34 +67,32 @@ public class ExcelReader {
 	/**
 	 * <p>
 	 * 读取指定列的数据到List<String>中
-	 * eg: List<String> personList = ExcelReader.getColumnListByFilePath(filePath, 0, 3); // 读第一个sheet的第4列到集合中
+	 * eg: List<String> personList = ExcelReader.getColumnListByFilePath(filePath, 3); // 读第一个sheet的第4列到集合中
 	 * </p>
 	 * @param filePath 文件绝对路径 eg: e:/xxx/xxx.xlsx
-	 * @param sheetIndex sheet下标值
 	 * @param columnIndex 要读取列的下标
 	 * @param dataStartOrEndIndex 数据起始行、数据结束行（非必填，注意，起始和结束行的值都是下标值，下标值是从0开始，如第一行的下标值为0）
 	 * @return 指定类型的集合
 	 */
 	@SneakyThrows
-	public static List<String> getColumnListByFilePath(String filePath, int sheetIndex, int columnIndex, int... dataStartOrEndIndex) {
+	public static List<String> getColumnListByFilePath(String filePath, int columnIndex, int... dataStartOrEndIndex) {
 		try (Workbook wb = getWorkbookByFile(new File(filePath))) {
-			return getListByColumnIndex(wb, sheetIndex, columnIndex, dataStartOrEndIndex);
+			return getListByColumnIndex(wb, 0, columnIndex, dataStartOrEndIndex);
 		}
 	}
 
 	/**
 	 * 读取指定列的数据到List<String>中
-	 * eg: List<String> personList = ExcelReader.getColumnListByInputStream(inputStream, 0, 3); // 读第一个sheet的第4列到集合中
+	 * eg: List<String> personList = ExcelReader.getColumnListByInputStream(inputStream, 3); // 读第一个sheet的第4列到集合中
 	 * @param inputStream excel文件输入流
-	 * @param sheetIndex sheet下标值
 	 * @param columnIndex 要读取列的下标
 	 * @param dataStartOrEndIndex 数据起始行、数据结束行（非必填，注意，起始和结束行的值都是下标值，下标值是从0开始，如第一行的下标值为0）
 	 * @return 指定类型的集合
 	 */
 	@SneakyThrows
-	public static List<String> getColumnListByInputStream(InputStream inputStream, int sheetIndex, int columnIndex, int... dataStartOrEndIndex) {
+	public static List<String> getColumnListByInputStream(InputStream inputStream, int columnIndex, int... dataStartOrEndIndex) {
 		try (Workbook wb = getWorkbookByInputStream(inputStream)) {
-			return getListByColumnIndex(wb, sheetIndex, columnIndex, dataStartOrEndIndex);
+			return getListByColumnIndex(wb, 0, columnIndex, dataStartOrEndIndex);
 		}
 	}
 
