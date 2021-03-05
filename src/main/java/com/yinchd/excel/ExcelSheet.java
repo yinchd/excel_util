@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * 添加注解的格式为 : </br>
  * eg：@ExcelSheet(name="用户列表", headColor=HSSFColor.HSSFColorPredefined.LIGHT_GREEN)</br>
  * name：Excel中sheet的名称，headColor：标题头的颜色
- * @author 研发部-殷晨东
+ * @author yinchd
  * @since 2018-06-13
  */
 @Target({ java.lang.annotation.ElementType.TYPE })

@@ -7,38 +7,45 @@ import java.lang.annotation.Target;
 
 /**
  * 字段注解，用于实体属性与Excel值之间的映射关系 </br>
- * 添加注解的格式为 : </br>
- * eg：@ExcelField(name="名称", index=1, width=30*256,value="{'A':'待激活','B':'激活','C';'停机'}")</br>
- * name：对应实体属性的中文名称，可以与页面列表头保持一致，index：列的顺序，用于工具在导出时能按此顺序执行导出， value：字符串形式的json数据，用于枚举类型的数据转换，width：单元格宽度
- * @author 研发部-殷晨东
+ * eg：@ExcelField(name="名称", index=1, width=30*256, parseJson="{'1': '有效', '2': '无效')</br>
+ * 其中name为必填，其它可以选填
+ * @author yinchd
  * @since 2018-06-13
  */
-@Target({ java.lang.annotation.ElementType.FIELD })
+@Target({java.lang.annotation.ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface ExcelField {
-	/*
-	 * 字段对应的中文名称
-	 */
-	String name() default "";
-	/*
-	 * 列宽  如： 30*256
-	 */
-	int width() default 0;
-	/*
-	 * 顺序（起始值可以从0开始，也可以从1开始，要保证数据有可比性）
-	 */
-	int index() default 0;
-	/*
-	 * 时间格式
-	 */
-	String dateformat() default "yyyy-MM-dd HH:mm:ss";
-	/*
-	 * 自定义转换参数 使用格式为JOSNObject格式
-	 */
-	String value() default "";
-	/*
-	 * 用于在导出时区分哪些字段适用于本次导出，如注解为‘admin’，则导出的时候只导出包含‘admin’的字段，如果不填，则导出所有
-	 */
-	String type() default "";
+
+    /**
+     * 导入时：name的值代表我们导入的excel文件中的列标题，在具体解析excel的过程中，会将实际读到的标题与ExcelField注解中name中定义值的作对比，据此判断导入文件是否合法；
+     * 导出时：name的值代表是实体字段对应的中文名称，比如有个字段叫‘hobby’，ExcelField注解中name的值是‘爱好’，则导出的excel文件中hobby列的表头为‘爱好’；
+     * eg：@ExcelField(name = "hobby")
+     */
+    String name();
+
+    /**
+     * 列宽，默认会自动根据内容适应宽度
+     * eg：@ExcelField(width = 30*256)
+     */
+    int width() default 0;
+
+    /**
+     * 导出的时候用于排列字段（列）的顺序
+     * eg：字段name的index为0，sex的index为1，则导出时生成的列字段name在前面，sex在后面
+     */
+    int index() default 0;
+
+    /**
+     * 时间格式
+     * eg: "yyyy-MM-dd HH:mm:ss" , "yyyy-MM-dd"
+     */
+    String dateformat() default "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 自定义转换参数，导出的时候比如字段值是枚举或者想转义成其它字符，这里可以定义一个json串，key为待转的字段，value为想转义出来值
+     * eg：convertJson="{'1': '有效', '2': '无效', '3': '正常'}"
+     */
+    String parseJson() default "";
+
 }

@@ -1,9 +1,5 @@
 package com.yinchd.excel;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,19 +71,16 @@ public final class FieldReflectionUtil {
 		}
 	}
 
-	public static Date parseDate(String value, ExcelField excelField) throws ParseException {
-			String datePattern = "yyyy-MM-dd HH:mm:ss";
-			if (excelField != null) {
-				datePattern = excelField.dateformat();
-			}
-			SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
-			return dateFormat.parse(value);
+	public static Date parseDate(String value, String pattern) throws ParseException {
+		if (pattern == null) {
+			pattern = "yyyy-MM-dd HH:mm:ss";
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+		return dateFormat.parse(value);
 	}
 
 	public static Object parseValue(Field field, String value) throws ParseException {
 		Class<?> fieldType = field.getType();
-
-		ExcelField excelField = (ExcelField) field.getAnnotation(ExcelField.class);
 		if ((value == null) || (value.trim().length() == 0)) {
 			return null;
 		}
@@ -114,33 +107,9 @@ public final class FieldReflectionUtil {
 			return parseDouble(value);
 		}
 		if (Date.class.equals(fieldType)) {
-			return parseDate(value, excelField);
+			return parseDate(value, null);
 		}
-		throw new RuntimeException("request illeagal type, type must be Integer not int Long not long etc, type=" + fieldType);
+		throw new RuntimeException("request illeagal type, type must be Integer not int , must be Long not long etc, type=" + fieldType);
 	}
 
-	public static String formatValue(Field field, Object value) {
-		Class<?> fieldType = field.getType();
-
-		ExcelField excelField = (ExcelField) field.getAnnotation(ExcelField.class);
-		if (value == null) {
-			return null;
-		}
-		if (Date.class.equals(fieldType)) {
-			String datePattern = "yyyy-MM-dd HH:mm:ss";
-			if ((excelField != null) && (excelField.dateformat() != null)) {
-				datePattern = excelField.dateformat();
-			}
-			SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
-			return dateFormat.format(value);
-		} else {
-			String str = String.valueOf(value);
-			String jsonStr = excelField.value();
-			if (StringUtils.isNotBlank(jsonStr)) {
-				JSONObject jso = JSON.parseObject(jsonStr);
-				str = jso.getString(str);
-			}
-			return str;
-		}
-	}
 }
