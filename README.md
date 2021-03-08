@@ -1,5 +1,5 @@
 # ExcelUtils
-### _A convenient Excel reading and writing util_
+### _A Convenient Excel Read and Write Util_
 ### _一款支持大数据量读取的Excel读取、写出工具集_
 #### 一、简介：
 > ##### 本项目参考了 [xxl-excel](https://github.com/xuxueli/xxl-excel) 的实现原理，加入了一些自定义功能，并且对读取性能进行了优化的通用Excel读取、导出工具
